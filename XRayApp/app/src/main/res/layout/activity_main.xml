@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/xray_bg"
+    android:orientation="vertical">
+
+    <!-- Area tampilan X-ray -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#000000">
+
+        <ImageView
+            android:id="@+id/xrayView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/app_name"
+            android:scaleType="fitCenter" />
+
+        <com.tugaskampus.xray.ScanlineView
+            android:id="@+id/scanline"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/levelBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|start"
+            android:layout_margin="12dp"
+            android:background="#99000000"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="4dp"
+            android:textColor="@color/xray_accent"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="8dp"
+            android:background="#99000000"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="2dp"
+            android:text="@string/disclaimer"
+            android:textColor="@color/xray_text_dim"
+            android:textSize="11sp" />
+    </FrameLayout>
+
+    <!-- Tombol aksi -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/xray_panel"
+        android:orientation="horizontal"
+        android:paddingHorizontal="8dp"
+        android:paddingTop="8dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSwitch"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="1"
+            android:text="@string/switch_camera"
+            android:textSize="12sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCapture"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:layout_weight="1"
+            android:text="@string/capture"
+            android:textSize="12sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGallery"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:text="@string/open_gallery"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <!-- Panel pengaturan -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        android:background="@color/xray_panel">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="16dp">
+
+            <TextView
+                style="@style/XRayLabel"
+                android:text="@string/label_presets" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/presetGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:singleLine="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/presetLow"
+                    style="@style/Widget.MaterialComponents.Chip.Action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rendah" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/presetMid"
+                    style="@style/Widget.MaterialComponents.Chip.Action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sedang" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/presetHigh"
+                    style="@style/Widget.MaterialComponents.Chip.Action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tinggi" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/presetMax"
+                    style="@style/Widget.MaterialComponents.Chip.Action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Maks" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/labelIntensity"
+                style="@style/XRayLabel" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/sliderIntensity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stepSize="1"
+                android:valueFrom="0"
+                android:valueTo="100" />
+
+            <TextView
+                android:id="@+id/labelPenetration"
+                style="@style/XRayLabel" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/sliderPenetration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stepSize="1"
+                android:valueFrom="0"
+                android:valueTo="100" />
+
+            <TextView
+                android:id="@+id/labelContrast"
+                style="@style/XRayLabel" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/sliderContrast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stepSize="1"
+                android:valueFrom="50"
+                android:valueTo="300" />
+
+            <TextView
+                android:id="@+id/labelGlow"
+                style="@style/XRayLabel" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/sliderGlow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stepSize="1"
+                android:valueFrom="0"
+                android:valueTo="100" />
+
+            <TextView
+                style="@style/XRayLabel"
+                android:text="@string/label_color" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/tintGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:selectionRequired="true"
+                app:singleSelection="true" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switchScanline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/scanline"
+                android:textColor="@color/xray_text" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnReset"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/reset" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

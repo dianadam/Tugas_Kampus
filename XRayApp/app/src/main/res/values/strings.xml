@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">X-Ray Cam</string>
+    <string name="disclaimer">Simulasi efek visual — bukan sinar-X sungguhan</string>
+    <string name="label_intensity">Tingkat Ray</string>
+    <string name="label_penetration">Daya Tembus</string>
+    <string name="label_contrast">Kontras</string>
+    <string name="label_glow">Cahaya (Glow)</string>
+    <string name="label_color">Warna Ray</string>
+    <string name="label_presets">Preset Tingkat</string>
+    <string name="scanline">Efek garis pindai</string>
+    <string name="switch_camera">Balik Kamera</string>
+    <string name="capture">Ambil Foto</string>
+    <string name="open_gallery">Buka Foto</string>
+    <string name="back_to_camera">Kembali ke Kamera</string>
+    <string name="reset">Reset</string>
+    <string name="permission_denied">Izin kamera ditolak. Anda masih bisa memakai foto dari galeri.</string>
+    <string name="saved">Foto disimpan ke Galeri (Pictures/XRayCam)</string>
+    <string name="save_failed">Gagal menyimpan foto</string>
+</resources>
