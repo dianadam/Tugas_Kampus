@@ -1,0 +1,7 @@
+<resources>
+    <color name="xray_bg">#FF05070D</color>
+    <color name="xray_panel">#FF0E1422</color>
+    <color name="xray_accent">#FF4FC3F7</color>
+    <color name="xray_text">#FFE3F2FD</color>
+    <color name="xray_text_dim">#FF90A4AE</color>
+</resources>

@@ -1,0 +1,23 @@
+<resources>
+    <style name="Theme.XRayCam" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/xray_accent</item>
+        <item name="colorPrimaryVariant">#FF0288D1</item>
+        <item name="colorOnPrimary">#FF000000</item>
+        <item name="colorSecondary">@color/xray_accent</item>
+        <item name="colorOnSecondary">#FF000000</item>
+        <item name="android:colorBackground">@color/xray_bg</item>
+        <item name="android:windowBackground">@color/xray_bg</item>
+        <item name="android:statusBarColor">@color/xray_bg</item>
+        <item name="android:navigationBarColor">@color/xray_panel</item>
+        <item name="android:textColorPrimary">@color/xray_text</item>
+        <item name="android:textColorSecondary">@color/xray_text_dim</item>
+    </style>
+
+    <style name="XRayLabel">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/xray_text</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_marginTop">8dp</item>
+    </style>
+</resources>
