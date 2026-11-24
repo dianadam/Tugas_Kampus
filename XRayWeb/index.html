@@ -66,6 +66,7 @@ button:hover, .filebtn:hover { border-color: var(--accent); }
 button:focus-visible, .filebtn:focus-within, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 button.primary { background: var(--accent); color: #04121c; border-color: var(--accent); font-weight: 600; }
 button:disabled { opacity: .4; cursor: not-allowed; }
+.actions .wide { grid-column: 1 / -1; }
 .filebtn input { position: absolute; width: 1px; height: 1px; opacity: 0; }
 .status { font-size: 12px; color: var(--dim); min-height: 1.2em; margin: -8px 0 0; }
 .status.warn { color: var(--warn); }
@@ -102,11 +103,14 @@ input[type=range] { width: 100%; accent-color: var(--accent); height: 24px; }
   <section class="console" aria-label="Pengaturan">
     <div class="actions">
       <button class="primary" id="btnCam">Nyalakan Kamera</button>
-      <label class="filebtn">Buka / Ambil Foto
+      <label class="filebtn" id="camPhotoBtn">Foto dengan Kamera
+        <input type="file" id="fileCam" accept="image/*" capture="environment">
+      </label>
+      <label class="filebtn">Buka dari Galeri
         <input type="file" id="file" accept="image/*">
       </label>
       <button id="btnFlip" disabled>Balik Kamera</button>
-      <button id="btnSave">Simpan Gambar</button>
+      <button id="btnSave" class="wide">Simpan Gambar</button>
     </div>
     <p class="status" id="status" role="status"></p>
 
@@ -310,7 +314,7 @@ input[type=range] { width: 100%; accent-color: var(--accent); height: 24px; }
   async function startCamera() {
     const status = $("status");
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      setStatus("Browser ini tidak mendukung kamera langsung. Pakai tombol Buka / Ambil Foto.", true);
+      cameraFailed(window.isSecureContext ? "unsupported" : "insecure");
       return;
     }
     try {
@@ -329,8 +333,35 @@ input[type=range] { width: 100%; accent-color: var(--accent); height: 24px; }
       loop();
     } catch (e) {
       stream = null;
-      setStatus("Kamera tidak bisa dibuka di halaman ini (izin ditolak atau tidak tersedia). Pakai Buka / Ambil Foto.", true);
+      cameraFailed(e && e.name);
     }
+  }
+
+  // Jelaskan kenapa kamera langsung gagal, lalu tawarkan kamera bawaan HP.
+  function cameraFailed(reason) {
+    const embedded = !!(window.claude && window.claude.use) || window.self !== window.top;
+    let msg;
+    if (embedded) {
+      msg = "Halaman ini dibuka di dalam claude.ai, yang memblokir kamera langsung. " +
+            "Pakai \u201cFoto dengan Kamera\u201d untuk memotret dengan aplikasi kamera HP, " +
+            "atau buka versi web (GitHub Pages) untuk kamera langsung.";
+    } else if (reason === "insecure") {
+      msg = "Kamera langsung hanya bisa lewat HTTPS atau localhost. Buka halaman ini lewat https://, " +
+            "atau pakai \u201cFoto dengan Kamera\u201d.";
+    } else if (reason === "NotAllowedError") {
+      msg = "Izin kamera ditolak. Izinkan kamera untuk situs ini di pengaturan browser (ikon gembok di bilah alamat), " +
+            "lalu coba lagi. Atau pakai \u201cFoto dengan Kamera\u201d.";
+    } else if (reason === "NotFoundError" || reason === "OverconstrainedError") {
+      msg = "Kamera tidak ditemukan di perangkat ini. Pakai \u201cBuka dari Galeri\u201d.";
+    } else if (reason === "NotReadableError") {
+      msg = "Kamera sedang dipakai aplikasi lain. Tutup aplikasi itu lalu coba lagi.";
+    } else {
+      msg = "Kamera langsung tidak bisa dibuka di browser ini. Pakai \u201cFoto dengan Kamera\u201d.";
+    }
+    setStatus(msg, true);
+    const btn = $("camPhotoBtn");
+    btn.style.borderColor = "var(--warn)";
+    setTimeout(() => { btn.style.borderColor = ""; }, 4000);
   }
   function stopCamera() {
     if (stream) stream.getTracks().forEach((t) => t.stop());
@@ -348,16 +379,18 @@ input[type=range] { width: 100%; accent-color: var(--accent); height: 24px; }
   });
   $("btnFlip").addEventListener("click", () => { facing = facing === "user" ? "environment" : "user"; startCamera(); });
 
-  $("file").addEventListener("change", (ev) => {
+  const onFile = (ev) => {
     const f = ev.target.files && ev.target.files[0];
     if (!f) return;
     const url = URL.createObjectURL(f);
     const img = new Image();
-    img.onload = () => { useImage(img, img.naturalWidth, img.naturalHeight, "FOTO · " + f.name); setStatus(""); };
+    img.onload = () => { useImage(img, img.naturalWidth, img.naturalHeight, "FOTO · " + (f.name || "kamera")); setStatus(""); };
     img.onerror = () => setStatus("File ini tidak bisa dibuka sebagai gambar.", true);
     img.src = url;
     ev.target.value = "";
-  });
+  };
+  $("file").addEventListener("change", onFile);
+  $("fileCam").addEventListener("change", onFile);
 
   // ---------- simpan
   $("btnSave").addEventListener("click", () => {
